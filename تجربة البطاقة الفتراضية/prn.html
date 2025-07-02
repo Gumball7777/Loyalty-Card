@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>بطاقة الولاء</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #0047AB, #002F6C);
+      background-image: url('primus_logo.png'); /* شعار المتجر */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 80%;
+      opacity: 0.95;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }.card-container {
+  perspective: 1000px;
+  margin-top: 40px;
+}
+
+.loyalty-card {
+  width: 320px;
+  height: 240px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  cursor: grab;
+  animation: rotateCard 10s infinite linear;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.loyalty-card:active {
+  cursor: grabbing;
+}
+
+@keyframes rotateCard {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.id {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.stamps {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #eee;
+  border: 2px solid #0047AB;
+}
+
+.filled {
+  background-color: #0047AB;
+}
+
+.motivation {
+  font-size: 14px;
+  color: #0047AB;
+  font-weight: bold;
+}
+
+footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-button {
+  background-color: #ffffffcc;
+  border: 1px solid #0047AB;
+  color: #0047AB;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-button:hover {
+  background-color: #0047AB;
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="loyalty-card" id="card">
+      <div>
+        <div class="name">الزبون: محمد العابد</div>
+        <div class="id">IP: 192.168.1.45</div>
+      </div>
+      <div class="stamps">
+        <div class="circle filled"></div>
+        <div class="circle filled"></div>
+        <div class="circle filled"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      <div class="motivation">كل طلب يقربك من مكافأتك 🎁</div>
+    </div>
+  </div>  <footer>
+    <a class="footer-button" href="https://www.facebook.com/profile.php?id=61553708292598&mibextid=ZbWKwL" target="_blank">زيارة صفحتنا على فيسبوك</a>
+    <button class="footer-button" onclick="shareCard()">مشاركة البطاقة</button>
+  </footer><audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d86fc8c5f1.mp3?filename=button-click-124467.mp3"></audio>
+
+  <script>
+    function shareCard() {
+      const shareData = {
+        title: 'بطاقة الولاء من متجرنا',
+        text: 'شاهد تقدمي في بطاقة الولاء واحصل على هديتك!',
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData).catch(console.error);
+      } else {
+        alert('المشاركة غير مدعومة في هذا المتصفح');
+      }
+    }
+
+    const card = document.getElementById('card');
+    const clickSound = document.getElementById('clickSound');
+    let isDragging = false;
+    let startX = 0;
+    let currentRotation = 0;
+    let animationActive = true;
+
+    card.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      card.style.animation = 'none';
+      animationActive = false;
+      clickSound.play();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      card.style.transform = rotateY(${currentRotation + dx}deg);
+    });
+
+    document.addEventListener('mouseup', (e) => {
+      if (isDragging) {
+        const dx = e.clientX - startX;
+        currentRotation += dx;
+        isDragging = false;
+      }
+    });
+  </script></body>
+</html>
